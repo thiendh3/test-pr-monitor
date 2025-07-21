@@ -10,6 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Jenkins Job
+        env:
+          JENKINS_URL: https://kuruma-jenkins.zigexn.vn
+          JENKINS_USER: kuruma
+          JENKINS_TOKEN: 113d9c82b3a8624eb60ae96392c7f8de2c
         run: |
-          curl -X POST \
-            "https://kuruma-jenkins.zigexn.vn/job/Kuruma%20Tools/job/test/build?token=12345678"
+          CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_TOKEN" \
+            "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+
+          curl -u "$JENKINS_USER:$JENKINS_TOKEN" -H "$CRUMB" \
+               -X POST "$JENKINS_URL/job/Kuruma%20Tools/job/test/build?token=12345678"
