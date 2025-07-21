@@ -11,9 +11,9 @@ jobs:
     steps:
       - name: Trigger Jenkins Job
         env:
-          JENKINS_URL: https://kuruma-jenkins.zigexn.vn
-          JENKINS_USER: kuruma
-          JENKINS_TOKEN: 113d9c82b3a8624eb60ae96392c7f8de2c
+          JENKINS_URL: ${{ secrets.JENKINS_URL }}
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
         run: |
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_TOKEN" \
             "$JENKINS_URL/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
